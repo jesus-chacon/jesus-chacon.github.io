@@ -1,1 +1,51 @@
 @import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Sora', ui-sans-serif, system-ui, sans-serif;
+  --color-ink: oklch(0.26 0.023 220);
+  --color-muted: oklch(0.43 0.024 220);
+  --color-teal-ink: oklch(0.43 0.088 193);
+  --color-mist: oklch(0.955 0.016 195);
+  --color-line: oklch(0.89 0.015 195);
+  --color-apricot: oklch(0.77 0.144 62);
+  --color-apricot-pale: oklch(0.938 0.038 70);
+}
+
+@layer base {
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-heading;
+  }
+
+  :where(a, button):focus-visible {
+    @apply outline-2 outline-offset-4 outline-teal-ink;
+  }
+}
+
+@layer components {
+  .page-container {
+    @apply mx-auto w-full max-w-5xl px-6;
+  }
+
+  .section-heading {
+    @apply text-3xl font-semibold tracking-tight md:text-4xl;
+  }
+
+  .action {
+    @apply inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full border border-line px-5 py-2.5 text-sm font-extrabold transition-colors hover:bg-mist;
+  }
+
+  .action-primary {
+    @apply border-transparent bg-apricot hover:bg-apricot/80;
+  }
+
+  .tag {
+    @apply rounded-full bg-mist px-2.5 py-1 text-xs font-bold text-teal-ink;
+  }
+}

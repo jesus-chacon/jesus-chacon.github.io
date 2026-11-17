@@ -1,18 +1,153 @@
 ---
-import '../styles/global.css';
+import CvDownload from '../components/CvDownload.astro';
+import { experienceGroups, projects, stackGroups } from '../data/portfolio';
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const navigation = [
+  { id: 'proyectos', label: 'Proyectos' },
+  { id: 'experiencia', label: 'Experiencia' },
+  { id: 'sobre-mi', label: 'Sobre mí' },
+  { id: 'contacto', label: 'Contacto' },
+];
+
+const portrait = '/images/jesus-chacon.png';
 ---
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Jesús Chacón · Porfolio</title>
-  </head>
-  <body class="min-h-screen bg-stone-950 text-stone-100 antialiased">
-    <main class="mx-auto max-w-3xl px-6 py-24 sm:px-10">
-      <h1 class="text-4xl font-bold tracking-tight sm:text-6xl">Jesús Chacón</h1>
-      <p class="mt-5 text-lg text-emerald-300">Tech Lead y desarrollador full stack en Málaga.</p>
+<SiteLayout
+  title="Jesús Chacón Ávila · Tech Lead y Full Stack Developer"
+  description="Porfolio de Jesús Chacón Ávila, Tech Lead y desarrollador full stack en Málaga. Proyectos, experiencia y contacto."
+>
+    <header class="sticky top-0 z-10 border-b border-line bg-white/95 backdrop-blur-sm">
+      <nav class="page-container flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-3 sm:min-h-14 sm:py-2" aria-label="Navegación principal">
+        <a href="#inicio" class="font-heading text-lg font-bold" aria-label="Jesús Chacón Ávila, inicio">JC<span class="text-teal-ink">.</span></a>
+        <ul class="flex w-full flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs font-semibold text-muted sm:w-auto sm:gap-x-8 sm:text-sm">
+          {navigation.map(({ id, label }) => (
+            <li><a class="inline-block py-1 hover:text-teal-ink" href={`#${id}`}>{label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+
+    <main id="contenido" class="scroll-mt-24" tabindex="-1">
+      <section class="page-container grid items-center gap-10 pt-14 pb-16 sm:pt-20 md:grid-cols-[minmax(0,1fr)_minmax(0,16rem)] md:gap-10 md:pt-32 md:pb-24" aria-labelledby="home-heading">
+        <div>
+          <p class="inline-flex rounded-full bg-apricot-pale px-3 py-1 text-sm font-semibold">Málaga, España</p>
+          <h1 id="home-heading" class="mt-6 text-4xl leading-[1.08] font-bold tracking-tight sm:text-5xl lg:text-6xl">Jesús Chacón Ávila</h1>
+          <p class="mt-4 text-xl font-bold text-teal-ink sm:text-2xl">Tech Lead / Full Stack Developer</p>
+          <p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+            Combino arquitectura, ejecución técnica y gestión de equipos para convertir ideas en productos digitales que evolucionan con rapidez y calidad.
+          </p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a class="action action-primary" href="#contacto">Hablemos <span class="ml-2" aria-hidden="true">→</span></a>
+            <a class="action" href="#proyectos">Ver proyectos</a>
+            <CvDownload />
+          </div>
+        </div>
+        <figure class="w-full max-w-56 rounded-[2.25rem] border border-line bg-mist/60 p-2.5 shadow-xl shadow-teal-ink/10 md:max-w-none">
+          <img src={portrait} alt="Retrato de Jesús Chacón Ávila" width="400" height="400" fetchpriority="high" class="aspect-square w-full rounded-[1.75rem] object-cover" />
+        </figure>
+      </section>
+
+      <section id="proyectos" class="scroll-mt-24 bg-mist py-16 md:scroll-mt-16 md:py-24" aria-labelledby="projects-heading">
+        <div class="page-container">
+          <h2 id="projects-heading" class="section-heading">Proyectos destacados</h2>
+          <div class="mt-8 grid gap-5 md:grid-cols-2">
+            {projects.map(({ slug, name, role, period, label, description, highlights, stack }) => (
+              <article class="flex flex-col rounded-2xl border border-line bg-white p-6 shadow-sm sm:p-7">
+                {label && <p class="mb-3 self-start rounded-full bg-apricot-pale px-2.5 py-1 text-xs font-bold">{label}</p>}
+                <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+                  <h3 class="text-xl font-semibold">{name}</h3>
+                  {period && <p class="text-xs font-bold whitespace-nowrap text-muted">{period}</p>}
+                </div>
+                {role && <p class="mt-1 text-sm font-bold text-teal-ink">{role}</p>}
+                <p class="mt-3 leading-relaxed text-muted">{description}</p>
+                {highlights && (
+                  <ul class="mt-4 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-muted marker:text-teal-ink">
+                    {highlights.map((highlight) => <li>{highlight}</li>)}
+                  </ul>
+                )}
+                <ul class="mt-auto flex flex-wrap gap-2 pt-5" aria-label={`Tecnologías de ${name}`}>
+                  {Array.from(new Set(stack.flatMap(({ items }) => items))).map((technology) => <li class="tag">{technology}</li>)}
+                </ul>
+                <a class="mt-5 self-start font-bold text-teal-ink underline-offset-4 hover:underline" href={`/proyectos/${slug}`}>
+                  Ver proyecto<span class="sr-only">: {name}</span> <span aria-hidden="true">→</span>
+                </a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="experiencia" class="page-container scroll-mt-24 py-16 md:scroll-mt-16 md:py-24" aria-labelledby="experience-heading">
+        <h2 id="experience-heading" class="section-heading">Experiencia y stack</h2>
+        <div class="mt-8 grid gap-10 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+          <div class="space-y-8">
+            {experienceGroups.map(({ title, entries }) => (
+              <div>
+                <h3 class={title ? 'mb-4 text-sm font-semibold text-teal-ink' : 'sr-only'}>{title ?? 'Trayectoria profesional'}</h3>
+                <ul class="space-y-6 border-l border-line pl-5">
+                  {entries.map(({ company, role, period, description }) => (
+                    <li class="relative before:absolute before:top-1.5 before:-left-6 before:size-2.5 before:rounded-full before:bg-teal-ink">
+                      <p class="text-xs font-bold text-muted">{period}</p>
+                      <h4 class="mt-1 font-heading text-sm font-semibold leading-relaxed sm:text-base">
+                        {company} <span class="text-teal-ink">· {role}</span>
+                      </h4>
+                      <p class="mt-1 text-sm leading-relaxed text-muted">{description}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div class="space-y-3">
+            {stackGroups.map(({ title, items }) => (
+              <div class="rounded-xl border border-line px-5 py-4">
+                <h3 class="text-sm font-semibold">{title}</h3>
+                <ul class="mt-2.5 flex flex-wrap gap-2">
+                  {items.map((item) => <li class="tag">{item}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="sobre-mi" class="scroll-mt-24 bg-mist py-16 md:scroll-mt-16 md:py-24" aria-labelledby="about-heading">
+        <div class="page-container grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_15rem] md:gap-16">
+          <div>
+            <h2 id="about-heading" class="section-heading">Sobre mí</h2>
+            <div class="mt-5 space-y-4 leading-relaxed text-muted">
+              <p>Soy Tech Lead y desarrollador full stack con más de diez años en el ecosistema JavaScript. Disfruto convirtiendo ideas en funcionalidades y trabajando cerca de los equipos de producto y diseño.</p>
+              <p>Combino IA aplicada al desarrollo con prácticas de Extreme Programming, pair programming, TDD y arquitectura hexagonal o en capas para construir software que el equipo pueda mantener y hacer crecer.</p>
+            </div>
+            <div class="mt-7 grid gap-4 sm:grid-cols-2">
+              <div class="rounded-xl border border-line bg-white p-4">
+                <h3 class="text-sm font-semibold">Formación</h3>
+                <p class="mt-2 text-sm font-bold">Ingeniería Informática</p>
+                <p class="mt-1 text-xs text-muted">Universidad de Málaga · 2011–2015</p>
+              </div>
+              <div class="rounded-xl border border-line bg-white p-4">
+                <h3 class="text-sm font-semibold">Idiomas</h3>
+                <p class="mt-2 text-sm text-muted">Español · Nativo</p>
+                <p class="mt-1 text-sm text-muted">Inglés · B1 (preparando B2)</p>
+              </div>
+            </div>
+          </div>
+          <img src={portrait} alt="" width="400" height="400" loading="lazy" class="aspect-square w-full max-w-48 rounded-[1.75rem] border border-line object-cover md:max-w-none" />
+        </div>
+      </section>
+
+      <section id="contacto" class="page-container scroll-mt-24 py-16 text-center md:scroll-mt-16 md:py-24" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" class="section-heading">¿Tienes un producto que impulsar?</h2>
+        <p class="mx-auto mt-4 max-w-md leading-relaxed text-muted">
+          Estoy abierto a nuevos retos de liderazgo técnico y desarrollo full stack. Escríbeme y lo hablamos.
+        </p>
+        <a class="action action-primary mt-6" href="https://www.linkedin.com/in/jesuschacon/">Contactar en LinkedIn</a>
+      </section>
     </main>
-  </body>
-</html>
+
+    <footer class="border-t border-line px-6 py-7 text-center text-sm text-muted">
+      © {new Date().getFullYear()} Jesús Chacón Ávila · Málaga
+    </footer>
+</SiteLayout>

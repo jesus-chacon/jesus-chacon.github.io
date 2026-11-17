@@ -12,7 +12,7 @@ Soy **Tech Lead y desarrollador full stack** en Málaga. Trabajo con equipos de 
 - **Nidario** · Agenda digital para escuelas infantiles.
 - **ClinicGest** · Gestión y generación de informes para clínicas.
 - **XatFlows** · Centraliza y automatiza la atención al cliente por WhatsApp y correo electrónico.
-- **CaravanMap** · Mapa para encontrar lugares donde acampar con caravana.
+- **CaravanMap** · Catálogo de áreas de servicio, campings y lugares de pernocta para una comunidad caravanista. En desarrollo.
 
 Trabajo principalmente con **TypeScript, Node.js, Vue y React**. Este repositorio está en preparación para construir el porfolio con **Astro y Tailwind CSS** y publicarlo en **GitHub Pages**.
 
